@@ -18,6 +18,10 @@ const currentGames = document.querySelector(".current-games");
 
 const pipelineGames = document.querySelector(".pipeline-games");
 
+const searchBar = document.querySelector(".search")
+
+
+
 //this is a comment block
 /**=======================create game file=================================*/
 
@@ -62,8 +66,10 @@ const saveGame = (event) => {
     let formData = event.target.gameName.value;
     gameTemplate(formData);
     event.target.gameName.value = "";
+    postGame(formData)
 };
 
+const allGames = [];
 
 /**============================================================ */
 
@@ -72,11 +78,15 @@ const getAllGame = () => {
     .then((resp) => resp.json())  
     .then((games) => {
         if (games.length > 0) {
-        renderGames(games);
+            games.map((game) => new Game(game));
+            renderGames(games);
+            const creator = new Creator('title', 6, 'things');
+            debugger;
         } else {
-            console.log('no games')
+            console.log('no games');
         }
-    }).catch((err) => {
+    })
+    .catch((err) => {
         console.log(err)
     });
 };
@@ -92,6 +102,7 @@ getAllGame();
 <span>Title by Creator</span>*/
 
 const renderGames = (games) => {
+    pipelineGames.innerHTML = "";
     games.forEach((game, idx) => {
         const {creator_id, publish_date, publisher, player_count, title, creator} = game
         const template = `
@@ -102,20 +113,48 @@ const renderGames = (games) => {
         <p>${player_count}</p>
         `;
         pipelineGames.innerHTML += template;
+        
     });   
 };
+//when creating RestRouting we using index and send as a POST
+const postGame = (data) => {
+    const jsonToSend = {
+        game: {
+            title: data,
+        },
+    }
+    const configObj = {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+            "Content-Type": "application/json",
+//stringfy is how JSON is ran 
+        },
+        body: JSON.stringify(jsonToSend),
 
-const postGame = () => {
-    fetch(`${baseUrl}/games`)
-    .then((resp) => resp.json())  
-    .then((games) => {
-        if (games.length > 0) {
-        renderGames(games);
-        } else {
-            console.log('no games')
-        }
-    }).catch((err) => {
-        console.log(err)
+    };
+    fetch(`${baseUrl}/games`, configObj)
+    .then((data) =>{
+        return data.json();
+        //console.log(data)
+    })
+    .then((newGame) => {
+        console.log(newGame);
     });
+};
 
-}
+const findResults = (e) => {
+    const term = e.target.value.toLowerCase;
+    const games = allGames.filter((game) => {
+    //    if(game.title != null) {     
+    //    return game.title.toLowerCase().includes(term);
+    //    }
+    });
+   renderGames(games);
+};
+
+searchBar.addEventListener("keyup", findResults);
+
+console.log(allGames)
+
