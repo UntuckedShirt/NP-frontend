@@ -22,8 +22,8 @@ class Game {
         (this.publisher = attrs.publisher),
         (this.publish_date = attrs.publish_date),
         (this.player_count = attrs.player_count),
-        (this.creater = attrs.creator);
-    Game.allGames[this.id] = this;
+        (this.creator = attrs.creator);
+    Game.allGames.push(this);
     }
 
     static all = () => {
@@ -33,16 +33,16 @@ class Game {
     //access creator in here
 }
 
-        class Creator extends Game {
-            static allCreators = {};
-            constructor(title, id, creatorThing) {
-                //super(title, id);
-                this.creatorThing = creatorThing;
-                creator.allCreators[this.id] = this
-            }
-            static all = () => {
-                return creator.allCreators;
-            };
-        }
+        // class Creator extends Game {
+        //     static allCreators = {};
+        //     constructor(title, id, creatorThing) {
+        //         //super(title, id);
+        //         this.creatorThing = creatorThing;
+        //         creator.allCreators[this.id] = this
+        //     }
+        //     static all = () => {
+        //         return creator.allCreators;
+        //     };
+        // }
 
 

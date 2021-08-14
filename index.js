@@ -52,7 +52,7 @@ const createForm = () => {
     //const formSubmit = document.querySelector(".form-submit");
 
 
-createGameButton.addEventListener("click", createForm);
+document.getElementById("new-game-form").addEventListener("submit", GameApi.create);
 
 
 const gameTemplate = (data) => {
@@ -80,8 +80,8 @@ const getAllGame = () => {
         if (games.length > 0) {
             games.map((game) => new Game(game));
             renderGames(games);
-            const creator = new Creator('title', 6, 'things');
-            debugger;
+            
+           
         } else {
             console.log('no games');
         }
@@ -100,14 +100,26 @@ getAllGame();
 <p>Publisher</p>
 <p>Player_Count</p>
 <span>Title by Creator</span>*/
-
+// {
+//     "creator_id": 1,
+//     "title": "GuiltyGear",
+//     "publisher": "ArcSystems",
+//     "publish_date": "May 14, 1998‎ - Present",
+//     "player_count": 16040,
+//     "creator": {
+//          "creator_id": 1,
+//          "creator_name": "Daisuke Ishiwatari"
+//     }
+//     },
 const renderGames = (games) => {
     pipelineGames.innerHTML = "";
+ 
     games.forEach((game, idx) => {
         const {creator_id, publish_date, publisher, player_count, title, creator} = game
+   
         const template = `
-        <h4 class = '${idx}'> ${creator_id}</h4>
-        <span>${title} by ${creator}</span>
+        <h4 class = '${idx}'> ${creator.creator_name}</h4>
+        <span>${title} by ${creator.creator_name}</span>
         <p>${publish_date}</p>
         <p>${publisher}</p>
         <p>${player_count}</p>
@@ -145,12 +157,14 @@ const postGame = (data) => {
 };
 
 const findResults = (e) => {
-    const term = e.target.value.toLowerCase;
-    const games = allGames.filter((game) => {
+    const term = e.target.value.toLowerCase();
+    const games = Game.allGames.filter((game) => {
     //    if(game.title != null) {     
-    //    return game.title.toLowerCase().includes(term);
+        return game.creator.creator_name.toLowerCase().includes(term) || game.title.toLowerCase().includes(term);
+       
     //    }
     });
+
    renderGames(games);
 };
 
