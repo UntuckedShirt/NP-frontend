@@ -36,5 +36,12 @@ class GameApi {
         });
 
     }
-
+    static delete(e){
+        debugger
+        const gameId = e.target.dataset.gameId
+        document.querySelector(`#game-${gameId}`).remove()
+        fetch(`${baseUrl}/games/${gameId}`, {
+            method: 'DELETE'
+        })
+    }
 }

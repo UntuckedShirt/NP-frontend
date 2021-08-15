@@ -22,7 +22,9 @@ class Game {
         (this.publisher = attrs.publisher),
         (this.publish_date = attrs.publish_date),
         (this.player_count = attrs.player_count),
-        (this.creator = attrs.creator);
+        (this.creator = attrs.creator),
+        (this.id = attrs.id)
+        ;
     Game.allGames.push(this);
     }
 

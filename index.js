@@ -1,25 +1,23 @@
 console.log("test")
-{
+
 /* <form>
 <label>NeutralPunch</label>
 <input type="text" />
 <button type="submit">Add Game</button> */
-}
+
 //knows what request is always being sent too
 const baseUrl = "http://127.0.0.1:3000"
 
 
 const formContainer = document.querySelector(".game-container");
 //call formContainer becuase it gamecontainer has be queried
-const createGameButton = formContainer.querySelector(".create-game")
-;
+const createGameButton = formContainer.querySelector(".create-game");
 
 const currentGames = document.querySelector(".current-games");
 
 const pipelineGames = document.querySelector(".pipeline-games");
 
 const searchBar = document.querySelector(".search")
-
 
 
 //this is a comment block
@@ -30,6 +28,9 @@ const createForm = () => {
     const gameNameLabel = document.createElement("label");
     const gameNameInput = document.createElement("input");
     const gameSubmitButton = document.createElement("button");
+
+    
+
 
     gameNameLabel.innerHTML = "<h4>Game Name:</h4>";
     gameSubmitButton.innerText = "submit";
@@ -48,7 +49,7 @@ const createForm = () => {
     //gameSubmitButton.addEventListener("click", saveGame);
 
     gameForm.addEventListener("submit", saveGame);
-    };
+};
     //const formSubmit = document.querySelector(".form-submit");
 
 
@@ -115,16 +116,24 @@ const renderGames = (games) => {
     pipelineGames.innerHTML = "";
  
     games.forEach((game, idx) => {
-        const {creator_id, publish_date, publisher, player_count, title, creator} = game
+        const {creator_id, publish_date, publisher, player_count, title, creator, id} = game
    
         const template = `
-        <h4 class = '${idx}'> ${creator.creator_name}</h4>
-        <span>${title} by ${creator.creator_name}</span>
-        <p>${publish_date}</p>
-        <p>${publisher}</p>
-        <p>${player_count}</p>
-        `;
+        <div id="game-${id}"> 
+            <h4 class = '${idx}'> ${creator.creator_name}</h4>
+            <span>${title} by ${creator.creator_name}</span>
+            <p>${publish_date}</p>
+            <p>${publisher}</p>
+            <p>${player_count}</p>
+            <button data-game-id="${id}" class="delete-game-button"> Delete Game </button>
+        </div>`;
+
         pipelineGames.innerHTML += template;
+        document.querySelector(`#game-${id} .delete-game-button`).addEventListener("click", GameApi.delete)
+        // const games = document.getElementById("creator-id");
+        // game.parentNode.removeChild(games);
+        
+        
         
     });   
 };
