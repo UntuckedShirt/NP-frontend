@@ -112,31 +112,55 @@ getAllGame();
 //          "creator_name": "Daisuke Ishiwatari"
 //     }
 //     },
+// const renderGames = (games) => {
+//     pipelineGames.innerHTML = "";
+ 
+//     games.forEach((game, idx) => {
+//         const {creator_id, publish_date, publisher, player_count, title, creator, id} = game
+   
+//         const template = `
+//         <div id="game-${id}"> 
+//             <h4 class = '${idx}'> ${creator.creator_name}</h4>
+//             <span>${title} by ${creator.creator_name}</span>
+//             <p>${publish_date}</p>
+//             <p>${publisher}</p>
+//             <p>${player_count}</p>
+//             <button data-game-id="${id}" class="delete-game-button"> Delete Game </button>
+//         </div>`;
+
+//         pipelineGames.innerHTML += template;
+//         document.querySelector(`#game-${id} .delete-game-button`).addEventListener("click", GameApi.delete)
+//         // const games = document.getElementById("creator-id");
+//         // game.parentNode.removeChild(games);
+        
+        
+        
+//     });   
+// };
 const renderGames = (games) => {
     pipelineGames.innerHTML = "";
  
     games.forEach((game, idx) => {
         const {creator_id, publish_date, publisher, player_count, title, creator, id} = game
-   
-        const template = `
-        <div id="game-${id}"> 
+        const gameContainer = document.createElement('div')
+        gameContainer.id = `game-${id}`
+        gameContainer.innerHTML = `
             <h4 class = '${idx}'> ${creator.creator_name}</h4>
             <span>${title} by ${creator.creator_name}</span>
             <p>${publish_date}</p>
             <p>${publisher}</p>
             <p>${player_count}</p>
             <button data-game-id="${id}" class="delete-game-button"> Delete Game </button>
-        </div>`;
+            <button data-game-id="${id}" class="update-game-button"> Update Game </button>
+        `;
 
-        pipelineGames.innerHTML += template;
-        document.querySelector(`#game-${id} .delete-game-button`).addEventListener("click", GameApi.delete)
-        // const games = document.getElementById("creator-id");
-        // game.parentNode.removeChild(games);
-        
-        
-        
+        pipelineGames.append(gameContainer)
+        gameContainer.querySelector(`.delete-game-button`).addEventListener("click", GameApi.delete)
+        gameContainer.querySelector(`.update-game-button`).addEventListener("click", GameApi.update)   
     });   
 };
+
+
 //when creating RestRouting we using index and send as a POST
 const postGame = (data) => {
     const jsonToSend = {
